@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <base target="_top">
+   <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+ </head>
+  <script>
+
+  var dropdown_ids = ['judgment_col', 'target_col', 'morph_col', 'gloss_col', 'trans_col']
+  
+  function getExportColumns() {
+    
+    const cols = [];
+
+    for (let i = 0; i < dropdown_ids.length; i++){
+      cols.push(document.getElementById(dropdown_ids[i]).value);
+    }
+
+    google.script.run.exportToLatex(cols);
+  }
+
+  function useColumnNames(cb) {
+    
+    if (cb.checked){
+      useColumnNames();
+    }
+    else {
+      useColumnLetters();
+    }
+
+  }
+
+  function useColumnNames() {
+    
+    val col_names = google.script.run.getColumnNames();
+  }
+
+  function useColumnLetters() {
+    val letter_options = `<option value="A" selected>A</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+      <option value="D">D</option>
+      <option value="E">E</option>
+      <option value="F">F</option>
+      <option value="G">G</option>
+      <option value="H">H</option>`;
+    
+    for (let i = 0; i < dropdown_ids.length; i++){
+      document.getElementById(dropdown_ids[i]).innerHTML = letter_options;
+    }
+
+  }
+  </script>
+ <body>
+    <div>
+      <input type="col_names" id="col_names" onclick="useColumnNames(this)" clicked>
+      <label for="col_names">Use first row as column names?</label>
+    </div>
+
+    <!-- judgment -->
+    <label for="judgment_col">Judgment Column</label>
+    <select name="judgment_col" id="judgment_col">
+      <option value="A" selected>A</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+      <option value="D">D</option>
+      <option value="E">E</option>
+      <option value="F">F</option>
+      <option value="G">G</option>
+      <option value="H">H</option>
+    </select><br><br>
+
+    <!-- target sentence -->
+    <label for="target_col">Target Sentence Column</label>
+    <select name="target_col" id="target_col">
+      <option value="A" selected>A</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+      <option value="D">D</option>
+      <option value="E">E</option>
+      <option value="F">F</option>
+      <option value="G">G</option>
+      <option value="H">H</option>
+    </select><br><br>
+
+    <!-- morpheme break -->
+    <label for="morph_col">Morpheme Break Column</label>
+    <select name="morph_col" id="morph_col">  
+      <option value="A" selected>A</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+      <option value="D">D</option>
+      <option value="E">E</option>
+      <option value="F">F</option>
+      <option value="G">G</option>
+      <option value="H">H</option>
+    </select><br><br>
+
+    <!-- gloss -->
+    <label for="gloss_col">Gloss Column</label>
+    <select name="gloss_col" id="gloss_col">  
+      <option value="A" selected>A</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+      <option value="D">D</option>
+      <option value="E">E</option>
+      <option value="F">F</option>
+      <option value="G">G</option>
+      <option value="H">H</option>
+    </select><br><br>
+
+    <!-- translation -->
+    <label for="trans_col">Translation Column</label>
+    <select name="trans_col" id="trans_col">  
+      <option value="A" selected>A</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+      <option value="D">D</option>
+      <option value="E">E</option>
+      <option value="F">F</option>
+      <option value="G">G</option>
+      <option value="H">H</option>
+    </select><br><br>
+
+    <input type="button" class="action" value="Export" onclick="getExportColumns();" />
+    <input type="button" value="Cancel" onclick="google.script.host.close();">
+
+ </body>
+</html>
