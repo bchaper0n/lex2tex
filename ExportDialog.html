@@ -4,126 +4,68 @@
    <base target="_top">
    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
  </head>
-  <script>
+ <script>
 
-  var dropdown_ids = ['judgment_col', 'target_col', 'morph_col', 'gloss_col', 'trans_col']
-  
-  function getExportColumns() {
-    
-    const cols = [];
-
-    for (let i = 0; i < dropdown_ids.length; i++){
-      cols.push(document.getElementById(dropdown_ids[i]).value);
-    }
-
-    google.script.run.exportToLatex(cols);
-  }
-
-  function useColumnNames(cb) {
+  function setColumns(cb) {
     
     if (cb.checked){
-      useColumnNames();
+      google.script.run.withSuccessHandler(setColumnNames).getColumnNames();
     }
     else {
-      useColumnLetters();
+      google.script.run.withSuccessHandler(setColumnLetters).getColumnLetters();
     }
 
   }
 
-  function useColumnNames() {
+  function setColumnNames(colNames) {
     
-    val col_names = google.script.run.getColumnNames();
+    const dropdownIds = ['judgment_col', 'target_col', 'morph_col', 'gloss_col', 'trans_col'];
+
+    for (let i = 0; i < dropdownIds.length; i++){
+      document.getElementById(dropdownIds[i]).innerHTML = colNames;
+    }
   }
 
-  function useColumnLetters() {
-    val letter_options = `<option value="A" selected>A</option>
-      <option value="B">B</option>
-      <option value="C">C</option>
-      <option value="D">D</option>
-      <option value="E">E</option>
-      <option value="F">F</option>
-      <option value="G">G</option>
-      <option value="H">H</option>`;
-    
-    for (let i = 0; i < dropdown_ids.length; i++){
-      document.getElementById(dropdown_ids[i]).innerHTML = letter_options;
+  function setColumnLetters(colLetters) {
+
+    const dropdownIds = ['judgment_col', 'target_col', 'morph_col', 'gloss_col', 'trans_col'];
+
+    for (let i = 0; i < dropdownIds.length; i++){
+      document.getElementById(dropdownIds[i]).innerHTML = colLetters;
     }
 
   }
+
+  google.script.run.withSuccessHandler(setColumnNames).getColumnNames();
   </script>
  <body>
     <div>
-      <input type="col_names" id="col_names" onclick="useColumnNames(this)" clicked>
+      <input type="checkbox" id="col_names" onclick="setColumns(this);" checked>
       <label for="col_names">Use first row as column names?</label>
     </div>
 
     <!-- judgment -->
-    <label for="judgment_col">Judgment Column</label>
-    <select name="judgment_col" id="judgment_col">
-      <option value="A" selected>A</option>
-      <option value="B">B</option>
-      <option value="C">C</option>
-      <option value="D">D</option>
-      <option value="E">E</option>
-      <option value="F">F</option>
-      <option value="G">G</option>
-      <option value="H">H</option>
-    </select><br><br>
+    <label for="judgment_col"><i>Judgment</i> column:</label>
+    <select name="judgment_col" id="judgment_col"></select><br><br>
 
     <!-- target sentence -->
-    <label for="target_col">Target Sentence Column</label>
-    <select name="target_col" id="target_col">
-      <option value="A" selected>A</option>
-      <option value="B">B</option>
-      <option value="C">C</option>
-      <option value="D">D</option>
-      <option value="E">E</option>
-      <option value="F">F</option>
-      <option value="G">G</option>
-      <option value="H">H</option>
-    </select><br><br>
+    <label for="target_col"><i>Target Sentence</i> column:</label>
+    <select name="target_col" id="target_col"></select><br><br>
 
     <!-- morpheme break -->
-    <label for="morph_col">Morpheme Break Column</label>
-    <select name="morph_col" id="morph_col">  
-      <option value="A" selected>A</option>
-      <option value="B">B</option>
-      <option value="C">C</option>
-      <option value="D">D</option>
-      <option value="E">E</option>
-      <option value="F">F</option>
-      <option value="G">G</option>
-      <option value="H">H</option>
-    </select><br><br>
+    <label for="morph_col"><i>Morpheme Break</i> column:</label>
+    <select name="morph_col" id="morph_col"></select><br><br>
 
     <!-- gloss -->
-    <label for="gloss_col">Gloss Column</label>
-    <select name="gloss_col" id="gloss_col">  
-      <option value="A" selected>A</option>
-      <option value="B">B</option>
-      <option value="C">C</option>
-      <option value="D">D</option>
-      <option value="E">E</option>
-      <option value="F">F</option>
-      <option value="G">G</option>
-      <option value="H">H</option>
-    </select><br><br>
+    <label for="gloss_col"><i>Gloss</i> column:</label>
+    <select name="gloss_col" id="gloss_col"></select><br><br>
 
     <!-- translation -->
-    <label for="trans_col">Translation Column</label>
-    <select name="trans_col" id="trans_col">  
-      <option value="A" selected>A</option>
-      <option value="B">B</option>
-      <option value="C">C</option>
-      <option value="D">D</option>
-      <option value="E">E</option>
-      <option value="F">F</option>
-      <option value="G">G</option>
-      <option value="H">H</option>
-    </select><br><br>
+    <label for="trans_col"><i>Translation</i> column:</label>
+    <select name="trans_col" id="trans_col"></select><br><br>
 
-    <input type="button" class="action" value="Export" onclick="getExportColumns();" />
-    <input type="button" value="Cancel" onclick="google.script.host.close();">
+    <input type="button" class="action" value="Export" onclick="google.script.run.getExportColumns(this);"/>
+    <input type="button" value="Cancel" onclick="google.script.host.close();"/>
 
  </body>
 </html>
